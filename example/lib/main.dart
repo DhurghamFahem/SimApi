@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _fetchData() async {
-    final response = await _apiClient.get(Uri.parse('items'));
+    final response = await _apiClient.get(Uri.parse('/items'));
     if (response.statusCode == 200) {
       setState(() {
         _data = (response.body as List)
@@ -75,20 +75,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _createItem() async {
     final newItem = ItemRequest(name: _newItemController.text);
-    await _apiClient.post(Uri.parse('items'), body: newItem.toJson());
+    await _apiClient.post(Uri.parse('/items'), body: newItem.toJson());
     _newItemController.clear();
     _fetchData();
   }
 
   void _updateItem(String id) async {
     final updatedItem = ItemRequest(name: _newItemController.text);
-    await _apiClient.patch(Uri.parse('items/$id'), body: updatedItem.toJson());
+    await _apiClient.patch(Uri.parse('/items/$id'), body: updatedItem.toJson());
     _newItemController.clear();
     _fetchData();
   }
 
   void _deleteItem(String id) async {
-    await _apiClient.delete(Uri.parse('items/$id'));
+    await _apiClient.delete(Uri.parse('/items/$id'));
     _fetchData();
   }
 
