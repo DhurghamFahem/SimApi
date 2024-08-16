@@ -1,39 +1,79 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# SimApi
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+SimApi is a powerful and flexible library for simulating API responses in Dart. It allows developers to create mock APIs for testing and development purposes without the need for a real backend server.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Simulate HTTP methods: GET, POST, PUT, PATCH, DELETE
+- Customizable response delay to mimic network latency
+- Support for route parameters and query parameters
+- Custom route handlers for complex scenarios
+- Easy data seeding and management
+- Flexible route registration
 
-## Getting started
+## Installation
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add this to your package's `pubspec.yaml` file:
+
+```yaml
+dependencies:
+  sim_api: ^0.0.1
+```
+Then run:
+
+```bash
+flutter pub get
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+### Basic Setup
 
 ```dart
-const like = 'sample';
+import 'package:sim_api/sim_api.dart';
+
+void main() {
+  final api = SimApi<int>();
+  
+  // Register routes
+  api.registerRoute('/users');
+  api.registerRoute('/users', method: SimApiHttpMethod.get, haveRouteParameters: true);
+  
+  // Seed some data
+  api.seedData('/users', {
+    1: {'id': 1, 'name': 'Alice'},
+    2: {'id': 2, 'name': 'Bob'},
+  });
+  
+  // Use the API
+  api.get(Uri.parse('/users/$1')).then((response) {
+    print(response.body);
+  });
+}
 ```
 
-## Additional information
+### Custom Route Handlers
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+api.registerRoute('/custom', handler: (data, headers) {
+  return SimApiHttpResponse.ok({'message': 'Custom response'});
+});
+```
+
+### Simulating Network Delay
+
+```dart
+// Set a global delay
+api.delay = 1000; // 1 second delay
+
+// Or use the constructor
+final api = SimApi(defaultDelay: 1000);
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

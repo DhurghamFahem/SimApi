@@ -1,7 +1,7 @@
 name: sim_api
 description: "This package is particularly useful for Flutter app development but can be integrated into any Dart project where offline API simulation is required. It provides a robust and easy-to-use toolset for ensuring that your application handles various API scenarios effectively, without the need for live API endpoints. Whether you're developing new features, testing integrations, or troubleshooting issues, SimApi offers the tools needed to create a realistic and controllable testing environment."
 version: 0.0.1
-homepage: ""
+homepage: "https://github.com/DhurghamFahem/SimApi.git"
 
 environment:
   sdk: ^3.5.0
