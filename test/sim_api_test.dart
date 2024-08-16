@@ -4,10 +4,10 @@ import 'package:sim_api/models/sim_api_http_response.dart';
 import 'package:sim_api/sim_api.dart';
 
 void main() {
-  late SimApi<String> simApi;
+  late SimApi<int> simApi;
 
   setUp(() {
-    simApi = SimApi<String>(defaultDelay: 100);
+    simApi = SimApi<int>(defaultDelay: 100);
     simApi.registerRoute('/items');
     simApi.registerRoute(
       '/items',

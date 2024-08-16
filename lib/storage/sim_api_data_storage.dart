@@ -7,7 +7,7 @@ class SimApiDataStorage<TId> {
   /// - **id**: The ID associated with the value.
   /// - **value**: The value to be stored.
   void set(String route, TId id, dynamic value) {
-    value['id'] = id;
+    value['id'] = id.toString();
     _data.putIfAbsent(route, () => {})[id] = value;
   }
 
@@ -52,7 +52,7 @@ class SimApiDataStorage<TId> {
   /// - `true` if the value was updated successfully, or `false` if the route or ID was not found.
   bool update(String route, TId id, dynamic value) {
     if (_data.containsKey(route) && _data[route]!.containsKey(id)) {
-      value['id'] = id;
+      value['id'] = id.toString();
       _data[route]![id] = value;
       return true;
     }
