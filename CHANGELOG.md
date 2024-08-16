@@ -6,3 +6,11 @@
 * Added functionality for generating unique IDs and handling route parameters.
 * Included delay simulation to mimic network latency.
 * Provided comprehensive API for registering routes and handling requests.
+
+## 0.0.2
+
+* Fix package description.
+
+## 0.0.3
+
+* Fix package example and description. 
