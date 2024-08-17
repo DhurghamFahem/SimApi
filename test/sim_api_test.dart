@@ -85,10 +85,22 @@ void main() {
     });
 
     test('Registers and uses routes correctly', () async {
-      simApi.registerRoute('/custom', method: SimApiHttpMethod.get,
-          handler: (data, headers) {
-        return SimApiHttpResponse.ok({'message': 'custom route'});
-      });
+      simApi.registerRoute(
+        '/custom',
+        method: SimApiHttpMethod.get,
+        handler: (
+          url, {
+          body,
+          headers,
+          required delete,
+          required get,
+          required patch,
+          required post,
+          required put,
+        }) async {
+          return SimApiHttpResponse.ok({'message': 'custom route'});
+        },
+      );
 
       final response = await simApi.get(Uri.parse('/custom'));
       expect(response.statusCode, 200);

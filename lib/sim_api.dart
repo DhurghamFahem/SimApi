@@ -10,6 +10,7 @@ import 'package:sim_api/services/id_generator.dart';
 import 'package:sim_api/sim_api_base.dart';
 import 'package:sim_api/storage/sim_api_data_storage.dart';
 import 'package:sim_api/storage/sim_api_route_storage.dart';
+import 'package:sim_api/typedefs/route_handler.dart';
 
 class SimApi<TId> implements SimApiBase<TId> {
   final DelayService _delayService;
@@ -54,7 +55,7 @@ class SimApi<TId> implements SimApiBase<TId> {
       return SimApiHttpResponse.methodNotAllowed();
     }
     if (routeConfig?.handler != null) {
-      return routeConfig!.handler!(_dataStorage.getAll(route), headers);
+      return _getRouteHandler(routeConfig, url, headers, body);
     }
     await _delayService.simulateDelay();
     final id = _idGenerator.generate(_dataStorage.getMaxId());
@@ -90,7 +91,7 @@ class SimApi<TId> implements SimApiBase<TId> {
       return SimApiHttpResponse.methodNotAllowed();
     }
     if (routeConfig?.handler != null) {
-      return routeConfig!.handler!(_dataStorage.getAll(route), headers);
+      return _getRouteHandler(routeConfig, url, headers, null);
     }
     await _delayService.simulateDelay();
     final routeData = _dataStorage.getMap(route);
@@ -143,7 +144,7 @@ class SimApi<TId> implements SimApiBase<TId> {
       return SimApiHttpResponse.methodNotAllowed();
     }
     if (routeConfig?.handler != null) {
-      return routeConfig!.handler!(_dataStorage.getAll(route), headers);
+      return _getRouteHandler(routeConfig, url, headers, body);
     }
     await _delayService.simulateDelay();
     final id = _idExtractor.extract(route, parsedUrl);
@@ -187,7 +188,7 @@ class SimApi<TId> implements SimApiBase<TId> {
       return SimApiHttpResponse.methodNotAllowed();
     }
     if (routeConfig?.handler != null) {
-      return routeConfig!.handler!(_dataStorage.getAll(route), headers);
+      return _getRouteHandler(routeConfig, url, headers, body);
     }
     await _delayService.simulateDelay();
     final id = _idExtractor.extract(route, parsedUrl);
@@ -232,7 +233,7 @@ class SimApi<TId> implements SimApiBase<TId> {
       return SimApiHttpResponse.methodNotAllowed();
     }
     if (routeConfig?.handler != null) {
-      return routeConfig!.handler!(_dataStorage.getAll(route), headers);
+      return _getRouteHandler(routeConfig, url, headers, body);
     }
     await _delayService.simulateDelay();
     final id = _idExtractor.extract(route, parsedUrl);
@@ -307,7 +308,7 @@ class SimApi<TId> implements SimApiBase<TId> {
     SimApiHttpMethod? method,
     bool? haveRouteParameters,
     bool? haveQueryParameters,
-    SimApiHttpResponse Function(List<dynamic>, Map<String, String>?)? handler,
+    RouteHandler? handler,
   }) {
     _routeStorage.registerRoute(route,
         routeConfig: SimApiRouteConfig(
@@ -333,5 +334,38 @@ class SimApi<TId> implements SimApiBase<TId> {
     _routeStorage.registerRoute(route,
         routeConfig: SimApiRouteConfig(method: method));
     return this;
+  }
+
+  Future<SimApiHttpResponse> _getRouteHandler(SimApiRouteConfig? routeConfig,
+      Uri url, Map<String, String>? headers, Object? body) {
+    return routeConfig!.handler!(
+      url,
+      headers: headers,
+      body: body,
+      post: (url, {body, headers}) => post(
+        url,
+        body: body,
+        headers: headers,
+      ),
+      get: (url, {body, headers}) => get(
+        url,
+        headers: headers,
+      ),
+      put: (url, {body, headers}) => put(
+        url,
+        body: body,
+        headers: headers,
+      ),
+      patch: (url, {body, headers}) => patch(
+        url,
+        body: body,
+        headers: headers,
+      ),
+      delete: (url, {body, headers}) => delete(
+        url,
+        body: body,
+        headers: headers,
+      ),
+    );
   }
 }

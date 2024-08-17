@@ -1,5 +1,6 @@
 import 'package:sim_api/models/sim_api_http_method.dart';
 import 'package:sim_api/models/sim_api_http_response.dart';
+import 'package:sim_api/typedefs/route_handler.dart';
 
 /// Abstract base class defining the interface for SimApi
 abstract class SimApiBase<TId> {
@@ -96,7 +97,7 @@ abstract class SimApiBase<TId> {
     SimApiHttpMethod? method,
     bool? haveRouteParameters,
     bool? haveQueryParameters,
-    SimApiHttpResponse Function(List<dynamic>, Map<String, String>?)? handler,
+    RouteHandler? handler,
   });
 
   /// Registers a route with a specified HTTP method
