@@ -1,6 +1,6 @@
 name: sim_api
 description: "SimApi provides simulated APIs for development and testing in Flutter and Dart."
-version: 0.0.3
+version: 0.0.4
 homepage: "https://github.com/DhurghamFahem/SimApi.git"
 
 environment:

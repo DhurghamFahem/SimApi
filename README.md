@@ -17,7 +17,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  sim_api: ^0.0.1
+  sim_api: ^0.0.4
 ```
 Then run:
 
@@ -55,9 +55,22 @@ void main() {
 ### Custom Route Handlers
 
 ```dart
-api.registerRoute('/custom', handler: (data, headers) {
-  return SimApiHttpResponse.ok({'message': 'Custom response'});
-});
+simApi.registerRoute(
+        '/custom',
+        method: SimApiHttpMethod.get,
+        handler: (
+          url, {
+          body,
+          headers,
+          required delete,
+          required get,
+          required patch,
+          required post,
+          required put,
+        }) async {
+          return SimApiHttpResponse.ok({'message': 'custom route'});
+        },
+      );
 ```
 
 ### Simulating Network Delay

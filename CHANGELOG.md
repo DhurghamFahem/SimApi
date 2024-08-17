@@ -14,3 +14,7 @@
 ## 0.0.3
 
 * Fix package example and description. 
+
+## 0.0.4
+
+* Edit custom route handler.
