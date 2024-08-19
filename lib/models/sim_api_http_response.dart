@@ -1,70 +1,66 @@
+import 'dart:convert';
+
+import 'package:http/http.dart';
+
 class SimApiHttpResponse {
-  final int statusCode; // HTTP status code
-  final dynamic body; // Response body content
-  final Map<String, String> headers; // HTTP headers
-
-  /// Constructs a `SimApiHttpResponse` instance with the specified status code, body, and headers.
-  ///
-  /// **Parameters**:
-  /// - `statusCode`: The HTTP status code for the response.
-  /// - `body`: The body of the response, which can be any type of data.
-  /// - `headers`: Optional map of HTTP headers for the response. Defaults to an empty map.
-  const SimApiHttpResponse({
-    required this.statusCode,
-    this.body,
-    this.headers = const {},
-  });
-
-  /// Creates a `SimApiHttpResponse` for a successful request with an OK status.
+  /// Creates a `Response` for a successful request with an OK status.
   ///
   /// **Parameters**:
   /// - `data`: The data to include in the response body.
   ///
   /// **Returns**:
-  /// - A `SimApiHttpResponse` with a 200 status code and the provided data.
-  factory SimApiHttpResponse.ok(dynamic data) {
-    return SimApiHttpResponse(
-      statusCode: 200,
-      body: data,
-    );
+  /// - A `Response` with a 200 status code and the provided data.
+  static ok(dynamic data) {
+    // Convert the data to JSON
+    var jsonData = jsonEncode(data);
+
+    // Create a Response object with a status code of 200 (OK)
+    return Response(jsonData, 200,
+        headers: {'Content-Type': 'application/json'});
   }
 
-  /// Creates a `SimApiHttpResponse` for a resource creation with a Created status.
+  /// Creates a `Response` for a resource creation with a Created status.
   ///
   /// **Parameters**:
   /// - `id`: The ID of the newly created resource.
   ///
   /// **Returns**:
-  /// - A `SimApiHttpResponse` with a 201 status code and the resource ID in the body.
-  factory SimApiHttpResponse.created(dynamic id) {
-    return SimApiHttpResponse(
-      statusCode: 201,
-      body: {'id': id},
-    );
+  /// - A `Response` with a 201 status code and the resource ID in the body.
+  static created(dynamic id) {
+    // Convert the data to JSON
+    var jsonData = jsonEncode({'id': id});
+
+    // Create a Response object with a status code of 201 (OK)
+    return Response(jsonData, 201,
+        headers: {'Content-Type': 'application/json'});
   }
 
-  /// Creates a `SimApiHttpResponse` for a successful request with no content.
+  /// Creates a `Response` for a successful request with no content.
   ///
   /// **Returns**:
-  /// - A `SimApiHttpResponse` with a 204 status code and an empty body.
-  factory SimApiHttpResponse.noContent() {
-    return const SimApiHttpResponse(statusCode: 204, body: '');
+  /// - A `Response` with a 204 status code and an empty body.
+  static noContent() {
+    // Create a Response object with a status code of 204 (OK)
+    return Response('', 204);
   }
 
-  /// Creates a `SimApiHttpResponse` for a request with a Method Not Allowed status.
+  /// Creates a `Response` for a request with a Method Not Allowed status.
   ///
   /// **Returns**:
-  /// - A `SimApiHttpResponse` with a 405 status code and a message indicating that the method is not allowed.
-  factory SimApiHttpResponse.methodNotAllowed() {
-    return const SimApiHttpResponse(
-        statusCode: 405, body: 'Method not allowed.');
+  /// - A `Response` with a 405 status code and a message indicating that the method is not allowed.
+  static methodNotAllowed() {
+    // Create a Response object with a status code of 405 (Method Not Allowed)
+    return Response('{"error": "Method Not Allowed"}', 405,
+        headers: {'Content-Type': 'application/json'});
   }
 
-  /// Creates a `SimApiHttpResponse` for a request with a Not Found status.
+  /// Creates a `Response` for a request with a Not Found status.
   ///
   /// **Returns**:
-  /// - A `SimApiHttpResponse` with a 404 status code and a message indicating that the resource was not found.
-  factory SimApiHttpResponse.notFound() {
-    return const SimApiHttpResponse(statusCode: 404, body: 'Not Found.');
+  /// - A `Response` with a 404 status code and a message indicating that the resource was not found.
+  static notFound() {
+    // Create a Response object with a status code of 404 (Not Found)
+    return Response('{"error": "Not Found"}', 404,
+        headers: {'Content-Type': 'application/json'});
   }
 }

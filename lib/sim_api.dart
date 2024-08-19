@@ -1,5 +1,6 @@
 library sim_api;
 
+import 'package:http/http.dart';
 import 'package:sim_api/models/sim_api_exception.dart';
 import 'package:sim_api/models/sim_api_http_method.dart';
 import 'package:sim_api/models/sim_api_http_response.dart';
@@ -41,7 +42,7 @@ class SimApi<TId> implements SimApiBase<TId> {
   /// 6. Stores the data in `_dataStorage` with the generated ID.
   /// 7. Returns a `SimApiHttpResponse.created` response with the new ID.
   @override
-  Future<SimApiHttpResponse> post(Uri url,
+  Future<Response> post(Uri url,
       {Map<String, String>? headers, Object? body}) async {
     final parsedUrl = url.toString();
     final route = _routeStorage.getBaseRoute(parsedUrl);
@@ -77,8 +78,7 @@ class SimApi<TId> implements SimApiBase<TId> {
   /// 6. If an ID is provided and exists, returns the corresponding resource.
   /// 7. If no ID is provided, returns a list of all resources, optionally filtered by query parameters.
   @override
-  Future<SimApiHttpResponse> get(Uri url,
-      {Map<String, String>? headers}) async {
+  Future<Response> get(Uri url, {Map<String, String>? headers}) async {
     final parsedUrl = url.toString();
     final route = _routeStorage.getBaseRoute(parsedUrl);
     if (route == null) {
@@ -130,7 +130,7 @@ class SimApi<TId> implements SimApiBase<TId> {
   /// 7. If the ID does not exist, calls `post` to create a new resource.
   /// 8. Returns a `SimApiHttpResponse.ok` response with the updated data.
   @override
-  Future<SimApiHttpResponse> put(Uri url,
+  Future<Response> put(Uri url,
       {Map<String, String>? headers, Object? body}) async {
     final parsedUrl = url.toString();
     final route = _routeStorage.getBaseRoute(parsedUrl);
@@ -174,7 +174,7 @@ class SimApi<TId> implements SimApiBase<TId> {
   /// 7. If the ID does not exist, returns a `SimApiHttpResponse.notFound`.
   /// 8. Returns a `SimApiHttpResponse.ok` response with the updated data.
   @override
-  Future<SimApiHttpResponse> patch(Uri url,
+  Future<Response> patch(Uri url,
       {Map<String, String>? headers, Object? body}) async {
     final parsedUrl = url.toString();
     final route = _routeStorage.getBaseRoute(parsedUrl);
@@ -219,7 +219,7 @@ class SimApi<TId> implements SimApiBase<TId> {
   /// 7. If the ID does not exist, returns a `SimApiHttpResponse.noContent` response.
   /// 8. Returns a `SimApiHttpResponse.noContent` response indicating successful deletion.
   @override
-  Future<SimApiHttpResponse> delete(Uri url,
+  Future<Response> delete(Uri url,
       {Map<String, String>? headers, Object? body}) async {
     final parsedUrl = url.toString();
     final route = _routeStorage.getBaseRoute(parsedUrl);
@@ -336,8 +336,8 @@ class SimApi<TId> implements SimApiBase<TId> {
     return this;
   }
 
-  Future<SimApiHttpResponse> _getRouteHandler(SimApiRouteConfig? routeConfig,
-      Uri url, Map<String, String>? headers, Object? body) {
+  Future<Response> _getRouteHandler(SimApiRouteConfig? routeConfig, Uri url,
+      Map<String, String>? headers, Object? body) {
     return routeConfig!.handler!(
       url,
       headers: headers,

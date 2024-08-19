@@ -1,5 +1,5 @@
+import 'package:http/http.dart';
 import 'package:sim_api/models/sim_api_http_method.dart';
-import 'package:sim_api/models/sim_api_http_response.dart';
 import 'package:sim_api/typedefs/route_handler.dart';
 
 /// Abstract base class defining the interface for SimApi
@@ -11,17 +11,16 @@ abstract class SimApiBase<TId> {
   /// [headers] Optional headers for the request
   /// [id] Optional ID for the new resource (if not provided, one will be generated)
   ///
-  /// Returns a `Future<SimApiHttpResponse>`, which represents the result of the simulated POST operation.
-  Future<SimApiHttpResponse> post(Uri url,
-      {Map<String, String>? headers, Object? body});
+  /// Returns a `Future<Response>`, which represents the result of the simulated POST operation.
+  Future<Response> post(Uri url, {Map<String, String>? headers, Object? body});
 
   /// Simulates a GET request
   ///
   /// [url] The API route
   /// [headers] Optional headers for the request
   ///
-  /// Returns a `Future<SimApiHttpResponse>`, representing the result of the simulated GET operation.
-  Future<SimApiHttpResponse> get(Uri url, {Map<String, String>? headers});
+  /// Returns a `Future<Response>`, representing the result of the simulated GET operation.
+  Future<Response> get(Uri url, {Map<String, String>? headers});
 
   /// Simulates a PUT request
   ///
@@ -29,9 +28,8 @@ abstract class SimApiBase<TId> {
   /// [body] The updated resource data
   /// [headers] Optional headers for the request
   ///
-  /// Returns a `Future<SimApiHttpResponse>`, representing the result of the simulated PUT operation.
-  Future<SimApiHttpResponse> put(Uri url,
-      {Map<String, String>? headers, Object? body});
+  /// Returns a `Future<Response>`, representing the result of the simulated PUT operation.
+  Future<Response> put(Uri url, {Map<String, String>? headers, Object? body});
 
   /// Simulates a PATCH request
   ///
@@ -39,17 +37,16 @@ abstract class SimApiBase<TId> {
   /// [body] The partial update data
   /// [headers] Optional headers for the request
   ///
-  /// Returns a `Future<SimApiHttpResponse>`, representing the result of the simulated PATCH operation.
-  Future<SimApiHttpResponse> patch(Uri url,
-      {Map<String, String>? headers, Object? body});
+  /// Returns a `Future<Response>`, representing the result of the simulated PATCH operation.
+  Future<Response> patch(Uri url, {Map<String, String>? headers, Object? body});
 
   /// Simulates a DELETE request
   ///
   /// [url] The API route (should include the resource ID)
   /// [headers] Optional headers for the request
   ///
-  /// Returns a `Future<SimApiHttpResponse>`, representing the result of the simulated DELETE operation.
-  Future<SimApiHttpResponse> delete(Uri url,
+  /// Returns a `Future<Response>`, representing the result of the simulated DELETE operation.
+  Future<Response> delete(Uri url,
       {Map<String, String>? headers, Object? body});
 
   /// Seeds the sim api with initial data

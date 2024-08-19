@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sim_api/models/sim_api_http_method.dart';
 import 'package:sim_api/models/sim_api_http_response.dart';
@@ -43,41 +45,47 @@ void main() {
       await simApi.post(url, body: body);
 
       final response = await simApi.get(url);
+      final responseBody = jsonDecode(response.body);
       expect(response.statusCode, 200);
-      expect(response.body, contains(body));
+      expect(responseBody, anyElement(containsPair('name', 'item2')));
     });
 
     test('PUT request updates data correctly', () async {
       final body = {'name': 'item3'};
       final postResponse =
           await simApi.post(Uri.parse('/items'), body: {'name': 'item2'});
+      final postResponseBody = jsonDecode(postResponse.body);
 
-      final url = Uri.parse('/items/${postResponse.body['id']}');
+      final url = Uri.parse('/items/${postResponseBody['id']}');
       await simApi.put(url, body: body);
 
       final response = await simApi.get(url);
+      final responseBody = jsonDecode(response.body);
       expect(response.statusCode, 200);
-      expect(response.body, body);
+      expect(responseBody, body);
     });
 
     test('PATCH request partially updates data correctly', () async {
       final postResponse =
           await simApi.post(Uri.parse('/items'), body: {'name': 'item4'});
+      final postResponseBody = jsonDecode(postResponse.body);
 
-      final url = Uri.parse('/items/${postResponse.body['id']}');
+      final url = Uri.parse('/items/${postResponseBody['id']}');
       final updatedData = {'name': 'updatedItem'};
       await simApi.patch(url, body: updatedData);
 
       final response = await simApi.get(url);
+      final responseBody = jsonDecode(response.body);
       expect(response.statusCode, 200);
-      expect(response.body, updatedData);
+      expect(responseBody, updatedData);
     });
 
     test('DELETE request removes data correctly', () async {
       var postResponse =
           await simApi.post(Uri.parse('/items'), body: {'name': 'item5'});
+      final postResponseBody = jsonDecode(postResponse.body);
 
-      final url = Uri.parse('/items/${postResponse.body['id']}');
+      final url = Uri.parse('/items/${postResponseBody['id']}');
       await simApi.delete(url);
 
       final response = await simApi.get(url);
@@ -103,8 +111,9 @@ void main() {
       );
 
       final response = await simApi.get(Uri.parse('/custom'));
+      final responseBody = jsonDecode(response.body);
       expect(response.statusCode, 200);
-      expect(response.body, {'message': 'custom route'});
+      expect(responseBody, {'message': 'custom route'});
     });
 
     test('Delay is applied correctly', () async {
@@ -124,8 +133,9 @@ void main() {
       simApi.clearData();
 
       final response = await simApi.get(url);
+      final responseBody = jsonDecode(response.body);
       expect(response.statusCode, 200);
-      expect(response.body, []);
+      expect(responseBody, []);
     });
   });
 }
