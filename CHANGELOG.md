@@ -18,3 +18,7 @@
 ## 0.0.4
 
 * Edit custom route handler.
+
+## 0.0.5
+
+* Fix response type and encoding.

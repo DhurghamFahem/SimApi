@@ -17,7 +17,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  sim_api: ^0.0.4
+  sim_api: ^0.0.5
 ```
 Then run:
 
